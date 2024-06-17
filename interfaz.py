@@ -1,6 +1,6 @@
 from textual.app import App, ComposeResult
 from textual.containers import Container
-from textual.widgets import Button, Static, Footer
+from textual.widgets import Button, Footer, DataTable
 from textual.binding import Binding
 
 class MainMenu(App):
@@ -57,9 +57,15 @@ class MainMenu(App):
 
 class AlumnoScreen(Container):
 
-
     def compose(self) -> ComposeResult:
+        table = DataTable(id="alumno_table")
+        table.add_column("ID")
+        table.add_column("Nombre")
+        table.add_row("1", "Juan")
+        table.add_row("2", "Ana")
+        
         yield Container(
+            table,
             Button("Volver", id="back"),
         )
 
