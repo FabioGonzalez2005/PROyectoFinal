@@ -1,6 +1,7 @@
 from textual.app import App, ComposeResult
 from textual.containers import Container
-from textual.widgets import Button, Static
+from textual.widgets import Button, Static, Footer
+from textual.binding import Binding
 
 class MainMenu(App):
     CSS = """
@@ -10,6 +11,29 @@ class MainMenu(App):
     }
     """
 
+    BINDINGS = [
+        Binding(
+            key="n",
+            action="show_alumno_screen",
+            description="Nuevo"
+        ),
+        Binding(
+            key="e",
+            action="help",
+            description="Editar"
+        ),
+        Binding(
+            key="b",
+            action="help3",
+            description="Borrar"
+        ),
+        Binding(
+            key="q",
+            action="quit",
+            description="Salir"
+        ),
+    ]
+
     def compose(self) -> ComposeResult:
         yield Container(
             Button("Alumno", id="alumno"),
@@ -17,6 +41,7 @@ class MainMenu(App):
             Button("Clase", id="clase"),
             id="menu",
         )
+        yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
