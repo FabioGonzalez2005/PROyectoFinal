@@ -70,6 +70,43 @@ class AlumnoScreen(Screen):
         if button_id == "back":
             self.app.pop_screen()
 
+class NotaScreen(Screen):
+
+    def compose(self) -> ComposeResult:
+        table = DataTable(id="alumno_table")
+        table.add_column("ID")
+        table.add_column("Nota")
+        table.add_row("1", "8.8")
+        table.add_row("2", "9.6")
+        
+        yield Container(
+            table,
+            Button("Volver", id="back"),
+        )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
+
+class ClaseScreen(Screen):
+
+    def compose(self) -> ComposeResult:
+        table = DataTable(id="alumno_table")
+        table.add_column("ID")
+        table.add_column("Clase")
+        table.add_row("1", "4ºC")
+        table.add_row("2", "1ºA")
+        
+        yield Container(
+            table,
+            Button("Volver", id="back"),
+        )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
 
 class MainApp(App):
     def on_mount(self) -> None:
