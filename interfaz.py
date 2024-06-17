@@ -49,7 +49,10 @@ class MainMenu(Screen):
         button_id = event.button.id
         if button_id == "alumno":
             self.app.push_screen(AlumnoScreen())
-
+        elif button_id == "nota":
+            self.app.push_screen(NotaScreen())
+        elif button_id == "clase":
+            self.app.push_screen(ClaseScreen())
 
 class AlumnoScreen(Screen):
 
@@ -73,7 +76,7 @@ class AlumnoScreen(Screen):
 class NotaScreen(Screen):
 
     def compose(self) -> ComposeResult:
-        table = DataTable(id="alumno_table")
+        table = DataTable(id="nota_table")
         table.add_column("ID")
         table.add_column("Nota")
         table.add_row("1", "8.8")
@@ -92,7 +95,7 @@ class NotaScreen(Screen):
 class ClaseScreen(Screen):
 
     def compose(self) -> ComposeResult:
-        table = DataTable(id="alumno_table")
+        table = DataTable(id="clase_table")
         table.add_column("ID")
         table.add_column("Clase")
         table.add_row("1", "4ºC")
