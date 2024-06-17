@@ -56,19 +56,11 @@ class MainMenu(App):
         self.query_one("#menu").remove()
 
 class AlumnoScreen(Container):
-    CSS = """
-    #alumno_menu {
-        align: center middle;
-        height: 100%;
-    }
-    """
+
 
     def compose(self) -> ComposeResult:
         yield Container(
-            Button("Añadir", id="add"),
-            Button("Editar", id="edit"),
-            Button("Borrar", id="delete"),
-            id="alumno_menu",
+            Button("Volver", id="back"),
         )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
