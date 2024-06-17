@@ -2,8 +2,10 @@ from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.widgets import Button, Footer, DataTable
 from textual.binding import Binding
+from textual.screen import Screen
 
-class MainMenu(App):
+
+class MainMenu(Screen):
     CSS = """
     #menu {
         align: center middle;
@@ -46,16 +48,10 @@ class MainMenu(App):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "alumno":
-            self.show_alumno_screen()
+            self.app.push_screen(AlumnoScreen())
 
-    def show_alumno_screen(self):
-        self.clear_screen()
-        self.mount(AlumnoScreen())
 
-    def clear_screen(self):
-        self.query_one("#menu").remove()
-
-class AlumnoScreen(Container):
+class AlumnoScreen(Screen):
 
     def compose(self) -> ComposeResult:
         table = DataTable(id="alumno_table")
@@ -71,7 +67,14 @@ class AlumnoScreen(Container):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
-        print(f"{button_id} button pressed")
+        if button_id == "back":
+            self.app.pop_screen()
+
+
+class MainApp(App):
+    def on_mount(self) -> None:
+        self.push_screen(MainMenu())
+
 
 if __name__ == "__main__":
-    MainMenu().run()
+    MainApp().run()
