@@ -14,21 +14,6 @@ class MainMenu(Screen):
 
     BINDINGS = [
         Binding(
-            key="n",
-            action="show_alumno_screen",
-            description="Nuevo"
-        ),
-        Binding(
-            key="e",
-            action="help",
-            description="Editar"
-        ),
-        Binding(
-            key="b",
-            action="help3",
-            description="Borrar"
-        ),
-        Binding(
             key="q",
             action="quit",
             description="Salir"
@@ -54,6 +39,28 @@ class MainMenu(Screen):
             self.app.push_screen(ClaseScreen())
 
 class AlumnoScreen(Screen):
+    BINDINGS = [
+        Binding(
+            key="n",
+            action="show_alumno_screen",
+            description="Nuevo"
+        ),
+        Binding(
+            key="e",
+            action="help",
+            description="Editar"
+        ),
+        Binding(
+            key="b",
+            action="help3",
+            description="Borrar"
+        ),
+        Binding(
+            key="q",
+            action="quit",
+            description="Salir"
+        ),
+    ]
 
     def compose(self) -> ComposeResult:
         table = DataTable(id="alumno_table")
@@ -74,7 +81,28 @@ class AlumnoScreen(Screen):
             self.app.pop_screen()
 
 class NotaScreen(Screen):
-
+    BINDINGS = [
+        Binding(
+            key="n",
+            action="show_alumno_screen",
+            description="Nuevo"
+        ),
+        Binding(
+            key="e",
+            action="help",
+            description="Editar"
+        ),
+        Binding(
+            key="b",
+            action="help3",
+            description="Borrar"
+        ),
+        Binding(
+            key="q",
+            action="quit",
+            description="Salir"
+        ),
+    ]
     def compose(self) -> ComposeResult:
         table = DataTable(id="nota_table")
         table.add_column("ID")
@@ -94,7 +122,28 @@ class NotaScreen(Screen):
             self.app.pop_screen()
 
 class ClaseScreen(Screen):
-
+    BINDINGS = [
+        Binding(
+            key="n",
+            action="show_alumno_screen",
+            description="Nuevo"
+        ),
+        Binding(
+            key="e",
+            action="help",
+            description="Editar"
+        ),
+        Binding(
+            key="b",
+            action="help3",
+            description="Borrar"
+        ),
+        Binding(
+            key="q",
+            action="quit",
+            description="Salir"
+        ),
+    ]
     def compose(self) -> ComposeResult:
         table = DataTable(id="clase_table")
         table.add_column("ID")
