@@ -4,7 +4,6 @@ from textual.widgets import Button, Footer, DataTable
 from textual.binding import Binding
 from textual.screen import Screen
 
-
 class MainMenu(Screen):
     CSS = """
     #menu {
@@ -67,6 +66,7 @@ class AlumnoScreen(Screen):
             table,
             Button("Volver", id="back"),
         )
+        yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
@@ -86,6 +86,7 @@ class NotaScreen(Screen):
             table,
             Button("Volver", id="back"),
         )
+        yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
@@ -105,6 +106,7 @@ class ClaseScreen(Screen):
             table,
             Button("Volver", id="back"),
         )
+        yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
@@ -114,7 +116,6 @@ class ClaseScreen(Screen):
 class MainApp(App):
     def on_mount(self) -> None:
         self.push_screen(MainMenu())
-
 
 if __name__ == "__main__":
     MainApp().run()
