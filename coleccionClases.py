@@ -26,7 +26,7 @@ SQLDDLSELECT1 = '''SELECT id FROM clases WHERE clase LIKE '''
 
 
 class ColeccionClases:
-    DBNAME = 'clases.db'
+    DBNAME = 'tabla.db'
 
     def __init__(self):
         self.con = Db.conectar(self.DBNAME)
