@@ -1,17 +1,17 @@
 class Nota:
-    def __init__(self, descripcion:str) -> None:
-        self.descripcion = descripcion
+    def __init__(self, nota:str) -> None:
+        self.nota = nota
 
     def read(self):
-        return self.id + ", " + self.descripcion
+        return self.id + ", " + self.nota
 
     def __str__(self) -> str:
-        return self.descripcion
+        return self.nota
 
-    def update(self, idNuevo:int, descripcionNuevo:str):
+    def update(self, idNuevo:int, notaNueva:str):
         self.id = idNuevo
-        self.descripcion = descripcionNuevo
+        self.nota = notaNueva
 
     def delete(self):
         self.id = None
-        self.descripcion = None
+        self.nota = None
