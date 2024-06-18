@@ -53,7 +53,7 @@ class ColeccionAlumnos:
         if id != 0:
             self.con.execute(SQLDDLDELETE + str(id))
 
-    def buscar(self, alumno:alumno) -> int:
+    def buscar(self, alumno:Alumno) -> int:
         resultado = 0
         elstr = '"' + str(alumno) + '"'
         res = self.con.execute(SQLDDLSELECT1 + elstr)

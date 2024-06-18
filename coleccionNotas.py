@@ -53,7 +53,7 @@ class ColeccionNotas:
         if id != 0:
             self.con.execute(SQLDDLDELETE + str(id))
 
-    def buscar(self, nota:nota) -> int:
+    def buscar(self, nota:Nota) -> int:
         resultado = 0
         elstr = '"' + str(nota) + '"'
         res = self.con.execute(SQLDDLSELECT1 + elstr)
