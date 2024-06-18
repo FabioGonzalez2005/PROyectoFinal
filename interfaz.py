@@ -58,9 +58,10 @@ class NuevoAlumnoScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_alumnos()
         elif button_id == "anadirAlumnoBoton":
             self.app.ca.insertar(Alumno(self.query_one(Input).value))
+            self.app.switch_to_alumnos()
 
 class BorrarAlumnoScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -76,9 +77,10 @@ class BorrarAlumnoScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_alumnos()
         elif button_id == "borrarAlumnoBoton":
             self.app.ca.borrar(Alumno(self.query_one(Input).value))
+            self.app.switch_to_alumnos()
 
 class AlumnoScreen(Screen):
     BINDINGS = [
@@ -94,7 +96,6 @@ class AlumnoScreen(Screen):
         
         yield Container(
             Button("Nuevo", id="nuevoAlumno"),
-            Button("Editar", id="editarAlumno"),
             Button("Borrar", id="borrarAlumno"),
             Button("Volver", id="back"),
         )
@@ -113,7 +114,7 @@ class AlumnoScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_main()
         elif button_id == "nuevoAlumno":
             self.app.pop_screen()
             self.app.push_screen(NuevoAlumnoScreen())
@@ -138,9 +139,10 @@ class NuevaNotaScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_notas()
         elif button_id == "anadirNotaBoton":
             self.app.cn.insertar(Nota(self.query_one(Input).value))
+            self.app.switch_to_notas()
 
 class BorrarNotaScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -156,9 +158,10 @@ class BorrarNotaScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_notas()
         elif button_id == "borrarNotaBoton":
             self.app.cn.borrar(Nota(self.query_one(Input).value))
+            self.app.switch_to_notas()
 
 class NotaScreen(Screen):
     BINDINGS = [
@@ -174,7 +177,6 @@ class NotaScreen(Screen):
         
         yield Container(
             Button("Nuevo", id="nuevaNota"),
-            Button("Editar", id="editarNota"),
             Button("Borrar", id="borrarNota"),
             Button("Volver", id="back"),
         )
@@ -193,7 +195,7 @@ class NotaScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_main()
         elif button_id == "nuevaNota":
             self.app.pop_screen()
             self.app.push_screen(NuevaNotaScreen())
@@ -218,9 +220,10 @@ class NuevaClaseScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_clases()
         elif button_id == "anadirClaseBoton":
             self.app.cc.insertar(Clase(self.query_one(Input).value))
+            self.app.switch_to_clases()
 
 class BorrarClaseScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -236,9 +239,10 @@ class BorrarClaseScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_clases()
         elif button_id == "borrarClaseBoton":
             self.app.cc.borrar(Clase(self.query_one(Input).value))
+            self.app.switch_to_clases()
             
 
 class ClaseScreen(Screen):
@@ -255,7 +259,6 @@ class ClaseScreen(Screen):
         
         yield Container(
             Button("Nuevo", id="nuevaClase"),
-            Button("Editar", id="editarClase"),
             Button("Borrar", id="borrarClase"),
             Button("Volver", id="back"),
         )
@@ -274,7 +277,7 @@ class ClaseScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
-            self.app.pop_screen()
+            self.app.switch_to_main()
         elif button_id == "nuevaClase":
             self.app.pop_screen()
             self.app.push_screen(NuevaClaseScreen())
@@ -291,7 +294,21 @@ class MainApp(App):
         self.ca = ColeccionAlumnos()
         self.cn = ColeccionNotas()
         self.cc = ColeccionClases()
+
+    def switch_to_alumnos(self) -> None:
+        self.push_screen(AlumnoScreen())
+
+    def switch_to_notas(self) -> None:
+        self.push_screen(NotaScreen())
+
+    def switch_to_clases(self) -> None:
+        self.push_screen(ClaseScreen())
+
+    def switch_to_main(self) -> None:
+        self.push_screen(MainMenu())
+
         
 
 if __name__ == "__main__":
-    MainApp().run()
+    app = MainApp()
+    app.run()
