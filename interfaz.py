@@ -3,6 +3,9 @@ from textual.containers import Container
 from textual.widgets import Button, Footer, DataTable
 from textual.binding import Binding
 from textual.screen import Screen
+from coleccionAlumnos import ColeccionAlumnos
+from coleccionNotas import ColeccionNotas
+from coleccionClases import ColeccionClases
 
 class MainMenu(Screen):
     CSS = """
@@ -39,20 +42,44 @@ class MainMenu(Screen):
             self.app.push_screen(ClaseScreen())
 
 class AlumnoScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield DataTable()
+        
+        yield Container(
+            Button("Volver", id="back"),
+        )
+        yield Footer()
+    
+    def _on_mount(self) -> None:
+        table = self.query_one(DataTable)
+        table.cursor_type =  "row"
+        table.zebra_stripes = True
+        alumnos = [("ID", "Nombre")]
+        alumnos += ColeccionAlumnos().leer()
+        table.add_columns(*alumnos[0])
+        table.add_rows(alumnos[1:])
+
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
+
+class AlumnoScreen(Screen):
     BINDINGS = [
         Binding(
             key="n",
-            action="show_alumno_screen",
+            action="switch_mode('nuevoAlumno')",
             description="Nuevo"
         ),
         Binding(
             key="e",
-            action="help",
+            action="switch_mode('editarAlumno')",
             description="Editar"
         ),
         Binding(
             key="b",
-            action="help3",
+            action="switch_mode('borrarAlumno')",
             description="Borrar"
         ),
         Binding(
@@ -62,18 +89,29 @@ class AlumnoScreen(Screen):
         ),
     ]
 
+    MODES = {
+        "nuevoAlumno": NuevoAlumnoScreen,
+        "editarAlumno": EditarAlumnoScreen,
+        "borrarAlumno": BorrarAlumnoScreen,
+    }
+
     def compose(self) -> ComposeResult:
-        table = DataTable(id="alumno_table")
-        table.add_column("ID")
-        table.add_column("Nombre")
-        table.add_row("1", "Juan")
-        table.add_row("2", "Ana")
+        yield DataTable()
         
         yield Container(
-            table,
             Button("Volver", id="back"),
         )
         yield Footer()
+    
+    def _on_mount(self) -> None:
+        table = self.query_one(DataTable)
+        table.cursor_type =  "row"
+        table.zebra_stripes = True
+        alumnos = [("ID", "Nombre")]
+        alumnos += ColeccionAlumnos().leer()
+        table.add_columns(*alumnos[0])
+        table.add_rows(alumnos[1:])
+
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
@@ -84,17 +122,17 @@ class NotaScreen(Screen):
     BINDINGS = [
         Binding(
             key="n",
-            action="show_alumno_screen",
+            action="nuevaNota",
             description="Nuevo"
         ),
         Binding(
             key="e",
-            action="help",
+            action="editarNota",
             description="Editar"
         ),
         Binding(
             key="b",
-            action="help3",
+            action="borrarNota",
             description="Borrar"
         ),
         Binding(
@@ -125,17 +163,17 @@ class ClaseScreen(Screen):
     BINDINGS = [
         Binding(
             key="n",
-            action="show_alumno_screen",
+            action="añadirClase",
             description="Nuevo"
         ),
         Binding(
             key="e",
-            action="help",
+            action="editarClase",
             description="Editar"
         ),
         Binding(
             key="b",
-            action="help3",
+            action="borrarClase",
             description="Borrar"
         ),
         Binding(
