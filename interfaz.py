@@ -6,6 +6,9 @@ from textual.screen import Screen
 from coleccionAlumnos import ColeccionAlumnos
 from coleccionNotas import ColeccionNotas
 from coleccionClases import ColeccionClases
+from alumno import Alumno
+from nota import Nota
+from clase import Clase
 
 class MainMenu(Screen):
     CSS = """
@@ -57,37 +60,34 @@ class NuevoAlumnoScreen(Screen):
         if button_id == "back":
             self.app.pop_screen()
         elif button_id == "anadirAlumnoBoton":
-            ColeccionAlumnos().insertar()
+            self.app.ca.insertar(Alumno(self.query_one(Input).value))
+
+class BorrarAlumnoScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield Input(placeholder="Nombre")
+
+        yield Container(
+            Button("Borrar", id="borrarAlumnoBoton"),
+            Button("Volver", id="back"),
+        )
+        yield Footer()
+
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
+        elif button_id == "borrarAlumnoBoton":
+            self.app.ca.borrar(Alumno(self.query_one(Input).value))
 
 class AlumnoScreen(Screen):
     BINDINGS = [
-        # Binding(
-        #     key="n",
-        #     action="switch_mode('nuevoAlumno')",
-        #     description="Nuevo"
-        # ),
-        # Binding(
-        #     key="e",
-        #     action="switch_mode('editarAlumno')",
-        #     description="Editar"
-        # ),
-        # Binding(
-        #     key="b",
-        #     action="switch_mode('borrarAlumno')",
-        #     description="Borrar"
-        # ),
         Binding(
             key="q",
             action="quit",
             description="Salir"
         ),
     ]
-
-    # MODES = {
-    #     "nuevoAlumno": NuevoAlumnoScreen,
-    #     "editarAlumno": EditarAlumnoScreen,
-    #     "borrarAlumno": BorrarAlumnoScreen,
-    # }
 
     def compose(self) -> ComposeResult:
         yield DataTable()
@@ -122,25 +122,10 @@ class AlumnoScreen(Screen):
             self.app.push_screen()
         elif button_id == "borrarAlumno":
             self.app.pop_screen()
-            self.app.push_screen()
+            self.app.push_screen(BorrarAlumnoScreen())
 
 class NotaScreen(Screen):
     BINDINGS = [
-        # Binding(
-        #     key="n",
-        #     action="nuevaNota",
-        #     description="Nuevo"
-        # ),
-        # Binding(
-        #     key="e",
-        #     action="editarNota",
-        #     description="Editar"
-        # ),
-        # Binding(
-        #     key="b",
-        #     action="borrarNota",
-        #     description="Borrar"
-        # ),
         Binding(
             key="q",
             action="quit",
@@ -168,21 +153,6 @@ class NotaScreen(Screen):
 class ClaseScreen(Screen):
     BINDINGS = [
         Binding(
-            key="n",
-            action="añadirClase",
-            description="Nuevo"
-        ),
-        Binding(
-            key="e",
-            action="editarClase",
-            description="Editar"
-        ),
-        Binding(
-            key="b",
-            action="borrarClase",
-            description="Borrar"
-        ),
-        Binding(
             key="q",
             action="quit",
             description="Salir"
@@ -209,6 +179,10 @@ class ClaseScreen(Screen):
 class MainApp(App):
     def on_mount(self) -> None:
         self.push_screen(MainMenu())
+        self.ca = ColeccionAlumnos()
+        self.cn = ColeccionNotas()
+        self.cc = ColeccionClases()
+        
 
 if __name__ == "__main__":
     MainApp().run()
