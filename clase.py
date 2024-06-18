@@ -1,4 +1,4 @@
-class Nota:
+class Clase:
     def __init__(self, clase:str) -> None:
         self.clase = clase
 
