@@ -124,6 +124,42 @@ class AlumnoScreen(Screen):
             self.app.pop_screen()
             self.app.push_screen(BorrarAlumnoScreen())
 
+class NuevaNotaScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield Input(placeholder="Nota")
+
+        yield Container(
+            Button("Añadir", id="anadirNotaBoton"),
+            Button("Volver", id="back"),
+        )
+        yield Footer()
+
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
+        elif button_id == "anadirNotaBoton":
+            self.app.cn.insertar(Nota(self.query_one(Input).value))
+
+class BorrarNotaScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield Input(placeholder="Nombre")
+
+        yield Container(
+            Button("Borrar", id="borrarNotaBoton"),
+            Button("Volver", id="back"),
+        )
+        yield Footer()
+
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+        if button_id == "back":
+            self.app.pop_screen()
+        elif button_id == "borrarNotaBoton":
+            self.app.cn.borrar(Nota(self.query_one(Input).value))
+
 class NotaScreen(Screen):
     BINDINGS = [
         Binding(
@@ -132,23 +168,41 @@ class NotaScreen(Screen):
             description="Salir"
         ),
     ]
+
     def compose(self) -> ComposeResult:
-        table = DataTable(id="nota_table")
-        table.add_column("ID")
-        table.add_column("Nota")
-        table.add_row("1", "8.8")
-        table.add_row("2", "9.6")
+        yield DataTable()
         
         yield Container(
-            table,
+            Button("Nuevo", id="nuevaNota"),
+            Button("Editar", id="editarNota"),
+            Button("Borrar", id="borrarNota"),
             Button("Volver", id="back"),
         )
         yield Footer()
+    
+    def _on_mount(self) -> None:
+        table = self.query_one(DataTable)
+        table.cursor_type =  "row"
+        table.zebra_stripes = True
+        notas = [("ID", "Nota")]
+        notas += ColeccionNotas().leer()
+        table.add_columns(*notas[0])
+        table.add_rows(notas[1:])
+
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id
         if button_id == "back":
             self.app.pop_screen()
+        elif button_id == "nuevaNota":
+            self.app.pop_screen()
+            self.app.push_screen(NuevaNotaScreen())
+        elif button_id == "editarNota":
+            self.app.pop_screen()
+            self.app.push_screen()
+        elif button_id == "borrarNota":
+            self.app.pop_screen()
+            self.app.push_screen(BorrarNotaScreen())
 
 class ClaseScreen(Screen):
     BINDINGS = [
